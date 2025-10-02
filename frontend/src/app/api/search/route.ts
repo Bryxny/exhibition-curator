@@ -5,6 +5,12 @@ const HARVARD_OBJECT_API = `${HARVARD_API_BASE}/object`;
 const HARVARD_PERSON_API = `${HARVARD_API_BASE}/person`;
 const MET_API_BASE = "https://collectionapi.metmuseum.org/public/collection/v1";
 
+function matchesArtist(artistQuery: string, displayName: string) {
+  const queryParts = artistQuery.toLowerCase().split(/\s+/);
+  const name = (displayName || "").toLowerCase();
+  return queryParts.every((part) => name.includes(part));
+}
+
 async function fetchMetArtworks(
   title: string,
   artist: string,
@@ -13,33 +19,37 @@ async function fetchMetArtworks(
 ) {
   const artworks: any[] = [];
 
-  let url;
-  if (artist && !title) {
-    url = `${MET_API_BASE}/search?artistOrCulture=true&q=${artist}`;
-  } else {
-    const query = [title, artist].filter(Boolean).join(" ");
-    url = `${MET_API_BASE}/search?q=${query}`;
+  const url =
+    artist && !title
+      ? `${MET_API_BASE}/search?artistOrCulture=true&q=${artist}`
+      : `${MET_API_BASE}/search?q=${[title, artist].filter(Boolean).join(" ")}`;
+
+  console.log(`[Met] Fetching objects: ${url}`);
+
+  let data;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.log("[Met] Search request failed");
+      return artworks;
+    }
+    data = await res.json();
+  } catch (err) {
+    console.log("[Met] Search request error", err);
+    return artworks;
   }
 
-  console.log(`fetching ${artist} ${title} from the met using ${url}`);
-
-  const res = await fetch(url);
-  if (!res.ok) return artworks;
-
-  const data = await res.json();
   const objectIDs: number[] = Array.isArray(data.objectIDs)
     ? data.objectIDs
     : [];
+  const chunk = objectIDs.slice(offset, offset + limit * 3);
 
-  let index = offset;
-
-  while (artworks.length < limit && index < objectIDs.length) {
-    const id = objectIDs[index++];
+  for (const id of chunk) {
     try {
       const objRes = await fetch(`${MET_API_BASE}/objects/${id}`);
       if (!objRes.ok) continue;
-      const obj = await objRes.json();
 
+      const obj = await objRes.json();
       const imageUrl = obj.primaryImageSmall || obj.primaryImage;
       if (!imageUrl) continue;
 
@@ -52,18 +62,14 @@ async function fetchMetArtworks(
         image: imageUrl,
         source: "The Met",
       });
+
+      if (artworks.length >= limit) break;
     } catch {
       continue;
     }
   }
 
   return artworks;
-}
-
-function matchesArtist(artistQuery: string, displayName: string) {
-  const queryParts = artistQuery.toLowerCase().split(/\s+/);
-  const name = displayName.toLowerCase();
-  return queryParts.every((part) => name.includes(part));
 }
 
 async function fetchHarvardArtworks(
@@ -77,13 +83,12 @@ async function fetchHarvardArtworks(
   if (!apiKey) return artworks;
 
   const page = Math.floor(offset / limit) + 1;
-
   let personId: string | null = null;
 
   if (artist) {
     try {
       const peopleRes = await fetch(
-        `${HARVARD_PERSON_API}?q=${artist}&apikey=${apiKey}`
+        `${HARVARD_PERSON_API}?q=${encodeURIComponent(artist)}&apikey=${apiKey}`
       );
       if (peopleRes.ok) {
         const peopleData = await peopleRes.json();
@@ -98,16 +103,26 @@ async function fetchHarvardArtworks(
     `size=${limit}`,
     `page=${page}`,
     `apikey=${apiKey}`,
-    title ? `title=${title}` : "",
+    title ? `title=${encodeURIComponent(title)}` : "",
     personId ? `person=${personId}` : "",
   ].filter(Boolean);
 
-  console.log(`fetching ${title} ${personId} from harvard`);
+  const url = `${HARVARD_OBJECT_API}?${params.join("&")}`;
+  console.log(`[Harvard] Fetching objects: ${url}`);
 
-  const res = await fetch(`${HARVARD_OBJECT_API}?${params.join("&")}`);
-  if (!res.ok) return artworks;
+  let data;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      console.log("[Harvard] Request failed");
+      return artworks;
+    }
+    data = await res.json();
+  } catch (err) {
+    console.log("[Harvard] Request error", err);
+    return artworks;
+  }
 
-  const data = await res.json();
   for (const rec of data.records || []) {
     if (!rec.primaryimageurl) continue;
 
@@ -132,6 +147,8 @@ export async function GET(req: NextRequest) {
   const offset = parseInt(req.nextUrl.searchParams.get("offset") || "0");
   const harvardKey = process.env.HARVARD_API_KEY;
 
+  console.log(`Starting search for title="${title}" artist="${artist}"`);
+
   try {
     let artworks: any[] = [];
 
@@ -149,6 +166,7 @@ export async function GET(req: NextRequest) {
       artworks.push(...harvard);
     }
 
+    console.log(`Returning total ${artworks.length} artworks`);
     return NextResponse.json(artworks.slice(0, limit));
   } catch (err) {
     console.error("Search error:", err);

@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import ArtworkCard from "./ArtworkCard";
+
 interface Artwork {
   id: string;
   title: string;
@@ -20,26 +22,28 @@ export default function ArtworkGrid({
   const [artworks, setArtworks] = useState<Artwork[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [limit, setLimit] = useState(10);
   const [offset, setOffset] = useState(0);
-  const [seenIds, setSeenIds] = useState<Set<string>>(new Set());
+  const [endOfResults, setEndOfResults] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const limit = 12;
 
-  const fetchArtworks = async (reset = false) => {
+  const fetchArtworks = async (currentOffset: number, reset = false) => {
     setLoading(true);
     setError(null);
 
     try {
       const res = await fetch(
-        `/api/search?title=${title}&artist=${artist}&limit=${limit}&offset=${offset}`
+        `/api/search?title=${encodeURIComponent(
+          title
+        )}&artist=${encodeURIComponent(
+          artist
+        )}&limit=${limit}&offset=${currentOffset}`
       );
       const data: Artwork[] = await res.json();
       if (!Array.isArray(data)) throw new Error("Invalid API response");
 
-      const newArtworks = data.filter((art) => !seenIds.has(art.id));
-      newArtworks.forEach((art) => seenIds.add(art.id));
-
-      setArtworks((prev) => (reset ? newArtworks : [...prev, ...newArtworks]));
-      setSeenIds(new Set(seenIds));
+      setArtworks((prev) => (reset ? data : [...prev, ...data]));
+      setEndOfResults(data.length !== limit);
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -50,18 +54,25 @@ export default function ArtworkGrid({
   useEffect(() => {
     if (!title && !artist) return;
     setOffset(0);
-    setSeenIds(new Set());
-    fetchArtworks(true);
+    setArtworks([]);
+    setEndOfResults(false);
+    fetchArtworks(0, true);
   }, [title, artist]);
 
   const handleLoadMore = () => {
-    setOffset((prev) => prev + limit);
+    const newOffset = offset + limit;
+    setOffset(newOffset);
+    fetchArtworks(newOffset);
   };
 
-  useEffect(() => {
-    if (offset === 0) return;
-    fetchArtworks();
-  }, [offset]);
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) newSet.delete(id);
+      else newSet.add(id);
+      return newSet;
+    });
+  };
 
   if (loading && artworks.length === 0)
     return <p className="p-6">Loading artworks...</p>;
@@ -72,28 +83,26 @@ export default function ArtworkGrid({
     <div className="p-6">
       <div className="grid grid-cols-4 gap-4">
         {artworks.map((art) => (
-          <div key={art.id} className="border rounded-lg p-2">
-            <h1 className="text-xl font-bold">{art.title}</h1>
-            <p>{art.artist || "Unknown Artist"}</p>
-            <img
-              src={art.image || "/placeholder.png"}
-              alt={art.title}
-              className="w-full h-auto object-cover rounded"
-            />
-            <p>{art.source}</p>
-          </div>
+          <ArtworkCard
+            key={art.id}
+            art={art}
+            isSelected={selectedIds.has(art.id)}
+            onClick={() => toggleSelect(art.id)}
+          />
         ))}
       </div>
 
-      <div className="flex justify-center mt-6">
-        <button
-          onClick={handleLoadMore}
-          disabled={loading}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
-        >
-          {loading ? "Loading..." : "Load More"}
-        </button>
-      </div>
+      {!endOfResults && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={handleLoadMore}
+            disabled={loading}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+          >
+            {loading ? "Loading..." : "Load More"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
