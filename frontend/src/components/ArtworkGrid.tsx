@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useCollection } from "../context/CollectionContext";
 
 import ArtworkCard from "./ArtworkCard";
 
@@ -24,8 +25,9 @@ export default function ArtworkGrid({
   const [error, setError] = useState<string | null>(null);
   const [offset, setOffset] = useState(0);
   const [endOfResults, setEndOfResults] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const limit = 12;
+
+  const { collection, addToCollection, removeFromCollection } = useCollection();
 
   const fetchArtworks = async (currentOffset: number, reset = false) => {
     setLoading(true);
@@ -65,13 +67,9 @@ export default function ArtworkGrid({
     fetchArtworks(newOffset);
   };
 
-  const toggleSelect = (id: string) => {
-    setSelectedIds((prev) => {
-      const newSet = new Set(prev);
-      if (newSet.has(id)) newSet.delete(id);
-      else newSet.add(id);
-      return newSet;
-    });
+  const toggleSelect = (art: Artwork) => {
+    if (collection.some((a) => a.id === art.id)) removeFromCollection(art);
+    else addToCollection(art);
   };
 
   if (loading && artworks.length === 0)
@@ -86,8 +84,8 @@ export default function ArtworkGrid({
           <ArtworkCard
             key={art.id}
             art={art}
-            isSelected={selectedIds.has(art.id)}
-            onClick={() => toggleSelect(art.id)}
+            isSelected={collection.some((a) => a.id === art.id)}
+            onClick={() => toggleSelect(art)}
           />
         ))}
       </div>

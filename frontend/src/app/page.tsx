@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import ArtworkGrid from "../components/ArtworkGrid";
+import Cart from "@/components/Cart";
 
 export default function ArtExhibition() {
   const [title, setTitle] = useState("");
@@ -11,6 +12,7 @@ export default function ArtExhibition() {
   return (
     <div>
       <SearchBar setTitle={setTitle} setArtist={setArtist} />
+      <Cart />
       <ArtworkGrid title={title} artist={artist} />
     </div>
   );
