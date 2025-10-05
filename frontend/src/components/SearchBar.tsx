@@ -21,7 +21,10 @@ export default function SearchBar({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 mb-4 flex gap-2 flex-wrap">
+    <form
+      onSubmit={handleSubmit}
+      className="px-20 pb-0 mb-4 flex gap-2 flex-wrap"
+    >
       <input
         type="text"
         placeholder="Search by title..."
