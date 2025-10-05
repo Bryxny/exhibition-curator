@@ -2,18 +2,13 @@
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
-export interface Artwork {
-  id: string;
-  title: string;
-  artist: string;
-  image: string;
-  source: string;
-}
+import { Artwork } from "../types/artwork";
 
 interface CollectionContextType {
   collection: Artwork[];
   addToCollection: (artwork: Artwork) => void;
   removeFromCollection: (artwork: Artwork) => void;
+  setCollection: React.Dispatch<React.SetStateAction<Artwork[]>>;
 }
 
 const CollectionContext = createContext<CollectionContextType | undefined>(
@@ -44,8 +39,12 @@ export const CollectionProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CollectionContext.Provider
-      value={{ collection, addToCollection, removeFromCollection }}
-    >
+      value={{
+        collection,
+        addToCollection,
+        removeFromCollection,
+        setCollection,
+      }}>
       {children}
     </CollectionContext.Provider>
   );
