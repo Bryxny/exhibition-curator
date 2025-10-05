@@ -1,10 +1,4 @@
-interface Artwork {
-  id: string;
-  title: string;
-  artist: string;
-  image: string;
-  source: string;
-}
+import { Artwork } from "../types/artwork";
 
 interface ArtworkCardProps {
   art: Artwork;

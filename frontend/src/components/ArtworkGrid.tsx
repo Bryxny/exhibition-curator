@@ -2,16 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useCollection } from "../context/CollectionContext";
+import { Artwork } from "../types/artwork";
 
 import ArtworkCard from "./ArtworkCard";
-
-interface Artwork {
-  id: string;
-  title: string;
-  artist: string;
-  image: string;
-  source: string;
-}
 
 export default function ArtworkGrid({
   title,
@@ -73,12 +66,12 @@ export default function ArtworkGrid({
   };
 
   if (loading && artworks.length === 0)
-    return <p className="p-6">Loading artworks...</p>;
+    return <p className="p-20">Loading artworks...</p>;
   if (error) return <p className="p-6 text-red-600">Error: {error}</p>;
   if (!artworks.length) return <p className="p-6">No results found.</p>;
 
   return (
-    <div className="p-6">
+    <div className="p-20 pt-10">
       <div className="grid grid-cols-4 gap-4">
         {artworks.map((art) => (
           <ArtworkCard
