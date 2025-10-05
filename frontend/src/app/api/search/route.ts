@@ -61,6 +61,14 @@ async function fetchMetArtworks(
         artist: obj.artistDisplayName || "Unknown Artist",
         image: imageUrl,
         source: "The Met",
+        period: obj.period || null,
+        medium: obj.medium || null,
+        objectDate: obj.objectDate || null,
+        dimensions: obj.dimensions || null,
+        culture: obj.culture || null,
+        department: obj.department || null,
+        classification: obj.classification || null,
+        rightsAndReproduction: obj.rightsAndReproduction || null,
       });
 
       if (artworks.length >= limit) break;
@@ -132,6 +140,14 @@ async function fetchHarvardArtworks(
       artist: rec.people?.[0]?.name || "Unknown Artist",
       image: rec.primaryimageurl,
       source: "Harvard Art Museums",
+      period: rec.period || null,
+      medium: rec.technique || rec.medium || null,
+      objectDate: rec.dated || null,
+      dimensions: rec.dimensions || null,
+      culture: rec.culture || null,
+      department: rec.division || null,
+      creditLine: rec.creditline || null,
+      classification: rec.classification || null,
     });
 
     if (artworks.length >= limit) break;
