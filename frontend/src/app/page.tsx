@@ -3,16 +3,16 @@
 import { useState } from "react";
 import SearchBar from "../components/SearchBar";
 import ArtworkGrid from "../components/ArtworkGrid";
-import Cart from "@/components/Cart";
+import Header from "@/components/Header";
 
-export default function ArtExhibition() {
+export default function Home() {
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("van gogh");
 
   return (
     <div>
+      <Header />
       <SearchBar setTitle={setTitle} setArtist={setArtist} />
-      <Cart />
       <ArtworkGrid title={title} artist={artist} />
     </div>
   );
