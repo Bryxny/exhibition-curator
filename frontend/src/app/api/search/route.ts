@@ -60,7 +60,7 @@ async function fetchMetArtworks(
         title: obj.title,
         artist: obj.artistDisplayName || "Unknown Artist",
         image: imageUrl,
-        source: "The Met",
+        source: "The Metropolitan Museum of Art",
         period: obj.period || null,
         medium: obj.medium || null,
         objectDate: obj.objectDate || null,
