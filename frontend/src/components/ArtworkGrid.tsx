@@ -71,15 +71,16 @@ export default function ArtworkGrid({
   if (!artworks.length) return <p className="p-6">No results found.</p>;
 
   return (
-    <div className="p-20 pt-10">
-      <div className="grid grid-cols-4 gap-4">
+    <div className="bg-neutral-200">
+      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 ">
         {artworks.map((art) => (
-          <ArtworkCard
-            key={art.id}
-            art={art}
-            isSelected={collection.some((a) => a.id === art.id)}
-            onClick={() => toggleSelect(art)}
-          />
+          <div key={art.id} className="break-inside-avoid mb-6">
+            <ArtworkCard
+              art={art}
+              isSelected={collection.some((a) => a.id === art.id)}
+              onClick={() => toggleSelect(art)}
+            />
+          </div>
         ))}
       </div>
 
@@ -88,8 +89,7 @@ export default function ArtworkGrid({
           <button
             onClick={handleLoadMore}
             disabled={loading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
-          >
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50">
             {loading ? "Loading..." : "Load More"}
           </button>
         </div>

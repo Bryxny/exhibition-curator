@@ -36,28 +36,32 @@ export default function CollectionModal() {
 
   return (
     <>
-      <div className="relative">
-        <button
-          className="flex items-center px-4 py-2 bg-black border border-gray-100 text-white rounded-lg"
-          onClick={() => setIsModalOpen(true)}>
-          Collection
-          <span className="ml-2 bg-white text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-            {collection.length}
-          </span>
-        </button>
+      <div
+        className="relative w-16 h-16 cursor-pointer mb-2 hover:scale-110 transition"
+        onClick={() => setIsModalOpen(true)}>
+        <img
+          src="/Cart.png"
+          alt="Collection"
+          className="w-full h-full object-cover"
+        />
+        <span className="absolute inset-0 top-3 flex items-center justify-center text-white text-lg drop-shadow-md">
+          {collection.length}
+        </span>
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 z-40 flex justify-end">
-          <div className="bg-black border w-80 h-full relative flex flex-col">
+        <div className="fixed inset-0 bg-zinc-900/80 z-40 flex justify-end">
+          <div className="bg-zinc-900 border w-100 h-full relative flex flex-col m-2">
             <div className="flex-1 overflow-y-auto px-4 py-4 custom-scrollbar">
               <button
-                className="absolute top-4 right-5 text-gray-500 hover:text-gray-300 z-50"
+                className="absolute top-4 right-6 text-gray-500 hover:text-gray-300 z-50"
                 onClick={() => setIsModalOpen(false)}>
                 ✕
               </button>
 
-              <h2 className="text-xl font-bold mb-4 text-white relative z-10">
+              <h2
+                className="text-xl mb-2 ml-2
+             text-neutral-200 relative z-10">
                 Your Collection
               </h2>
 
@@ -70,25 +74,25 @@ export default function CollectionModal() {
                   {collection.map((art, index) => (
                     <div
                       key={art.id}
-                      className={`break-inside-avoid relative group cursor-pointer mb-2 border-2 rounded ${
+                      className={`break-inside-avoid relative group cursor-pointer mb-2 border-3 ${
                         selected === art.id
-                          ? "border-yellow-400 shadow-lg"
+                          ? "border-yellow-600 shadow-lg"
                           : "border-transparent"
                       }`}
                       onClick={() => handleReplace(art.id)}>
                       <img
                         src={art.image}
                         alt={art.title}
-                        className="w-full h-auto object-cover rounded"
+                        className="w-full h-auto object-cover"
                       />
 
-                      <div className="absolute top-1 left-1 bg-black/60 text-white text-xs font-bold px-2 py-0.5 rounded opacity-50 z-50">
+                      <div className="absolute top-1 left-1 bg-black/80 text-white text-xs font-bold px-2 py-0.5 rounded opacity-50 z-50">
                         {index + 1}
                       </div>
 
                       {selected === art.id && (
                         <button
-                          className="absolute top-1 right-1 z-50 text-white bg-red-600 rounded-full p-1 transition"
+                          className="absolute top-1 right-1 bg-red-700/90 text-white text-xs font-bold px-1.5 py-0.5 rounded opacity-50 z-50"
                           onClick={(e) => {
                             removeFromCollection(art);
                             setSelected(null);
@@ -118,9 +122,9 @@ export default function CollectionModal() {
               )}
             </div>
 
-            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-4 pointer-events-none z-20 pt-10">
+            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-4 pointer-events-none z-20 pt-30">
               <button
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg w-full pointer-events-auto"
+                className="py-2 bg-zinc-900 text-neutral-200 border border-yellow-600 rounded-lg w-full pointer-events-auto"
                 onClick={() => router.push("/exhibition")}>
                 Go to Exhibition
               </button>
