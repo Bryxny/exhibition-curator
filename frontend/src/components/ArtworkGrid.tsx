@@ -72,7 +72,7 @@ export default function ArtworkGrid({
 
   return (
     <div className="bg-neutral-200">
-      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 ">
+      <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-6 ">
         {artworks.map((art) => (
           <div key={art.id} className="break-inside-avoid mb-6">
             <ArtworkCard
@@ -89,7 +89,7 @@ export default function ArtworkGrid({
           <button
             onClick={handleLoadMore}
             disabled={loading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50">
+            className="px-4 py-2 bg-zinc-900 text-white rounded-lg disabled:opacity-50">
             {loading ? "Loading..." : "Load More"}
           </button>
         </div>

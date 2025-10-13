@@ -4,7 +4,7 @@ import CollectionModal from "./CollectionModal";
 
 export default function Header() {
   return (
-    <header className="relative flex items-center px-10 py-2 bg-zinc-800 shadow-md min-h-26">
+    <header className="relative flex items-center py-2 px-3 bg-zinc-800 shadow-md">
       {/* Left side */}
       <div className="flex-1 flex items-center"></div>
 

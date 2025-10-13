@@ -14,33 +14,33 @@ export default function SearchBar({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setTitleInput("");
-    setArtistInput("");
     setTitle(titleInput.trim());
     setArtist(artistInput.trim());
+    setTitleInput("");
+    setArtistInput("");
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="py-3 px-4 mb-4 flex gap-6 flex-wrap bg-zinc-800 rounded text-white">
+      className="flex flex-col sm:flex-row gap-3 p-2 mb-5 bg-zinc-800 rounded text-white">
       <input
         type="text"
         placeholder="Search by title..."
         value={titleInput}
         onChange={(e) => setTitleInput(e.target.value)}
-        className="flex-1 border border-zinc-400 rounded p-2 text-white"
+        className="flex-1 border border-zinc-400 rounded p-2 text-white focus:outline-none"
       />
       <input
         type="text"
         placeholder="Search by artist..."
         value={artistInput}
         onChange={(e) => setArtistInput(e.target.value)}
-        className="flex-1 border border-zinc-400 rounded p-2 text-white"
+        className="flex-1 border border-zinc-400 rounded p-2 text-white focus:outline-none"
       />
       <button
         type="submit"
-        className="border border-yellow-600 text-white px-8 rounded hover:bg-yellow-600">
+        className="border border-yellow-600 text-white px-6 py-2 rounded hover:bg-yellow-600 sm:px-8">
         Search
       </button>
     </form>
