@@ -1,12 +1,15 @@
 "use client";
 
 import CollectionModal from "./CollectionModal";
+import UserModal from "./UserModal";
 
 export default function Header() {
   return (
     <header className="relative flex items-center py-2 px-3 bg-zinc-800 shadow-md">
       {/* Left side */}
-      <div className="flex-1 flex items-center"></div>
+      <div className="flex-1 flex items-center text-white">
+        <UserModal />
+      </div>
 
       {/* Center */}
       <div className="absolute left-1/2 transform -translate-x-1/2">
