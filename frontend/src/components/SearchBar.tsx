@@ -34,14 +34,14 @@ export default function SearchBar({
         placeholder={`Search by ${searchType}...`}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full sm:flex-1 border border-zinc-600 rounded-md p-2 text-white bg-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-yellow-600"
+        className="w-full sm:flex-1 border border-zinc-600 rounded-md p-2 text-white bg-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-yellow"
       />
 
       <div className="relative w-full sm:w-40">
         <select
           value={searchType}
           onChange={(e) => setSearchType(e.target.value as "title" | "artist")}
-          className="appearance-none w-full border border-zinc-600 rounded-md p-2 pr-8 bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-600">
+          className="appearance-none w-full border border-zinc-600 rounded-md p-2 pr-8 bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow">
           <option value="title">Title</option>
           <option value="artist">Artist</option>
         </select>
@@ -50,7 +50,7 @@ export default function SearchBar({
         </div>
       </div>
 
-      <button className="w-full sm:w-auto border border-yellow-600 bg-yellow-600 text-zinc-900 py-2  px-4 rounded-md font-medium hover:bg-yellow-500">
+      <button className="w-full sm:w-auto border border-yellow bg-yellow text-zinc-900 py-2 px-4 rounded-md font-medium hover:bg-yellow-hover">
         Search
       </button>
     </form>

@@ -89,7 +89,7 @@ export default function ArtworkGrid({
           <button
             onClick={handleLoadMore}
             disabled={loading}
-            className="px-4 py-2 bg-zinc-900 text-white rounded-lg disabled:opacity-50">
+            className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg disabled:opacity-50">
             {loading ? "Loading..." : "Load More"}
           </button>
         </div>

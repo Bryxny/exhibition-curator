@@ -12,9 +12,9 @@ export default function ExhibitionCard(art: Artwork) {
         key={art.id}
         className="break-inside-avoid mb-6 cursor-pointer group transition-transform duration-300 hover:scale-[1.02] flex flex-col items-center">
         <div
-          className="p-2 inline-block  bg-gradient-to-tr from-yellow-700 via-yellow-600 to-yellow-700"
+          className="p-2 inline-block  bg-gradient-to-tr from-gold via-shine to-gold"
           onClick={() => setModalOpen(true)}>
-          <div className="bg-neutral-100 p-2 border-4 border-yellow-900 shadow-md">
+          <div className="bg-neutral-100 p-2 border-4 border-gold-shad shadow-md">
             <img
               src={art.image}
               alt={art.title}

@@ -22,7 +22,7 @@ export default function ProfileModal() {
         onClick={() => setIsModalOpen(true)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-10 w-10 text-yellow-500"
+          className="h-10 w-10 text-yellow"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

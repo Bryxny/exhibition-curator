@@ -74,7 +74,7 @@ export default function CollectionModal() {
                       key={art.id}
                       className={`break-inside-avoid relative group cursor-pointer mb-4 border-3 ${
                         selected === art.id
-                          ? "border-yellow-600 shadow-lg"
+                          ? "border-yellow shadow-lg"
                           : "border-transparent"
                       }`}
                       onClick={() => handleReplace(art.id)}>
@@ -122,7 +122,7 @@ export default function CollectionModal() {
 
             <div className="sticky bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-4 z-20">
               <button
-                className="py-2 bg-zinc-900 text-neutral-200 border border-yellow-600 rounded-lg w-full"
+                className="py-2 bg-zinc-900 text-neutral-200 border border-zinc-600 hover:border-yellow rounded-lg w-full"
                 onClick={() => router.push("/exhibition")}>
                 Go to Exhibition
               </button>

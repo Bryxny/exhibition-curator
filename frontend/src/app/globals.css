@@ -12,6 +12,14 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --color-yellow: #c8a75b;
+  --color-yellow-hover: #e0c076;
+  --color-gold: #ab7b2e;
+  --color-shine: #c99747;
+  --color-gold-shad: #734f15;
+}
+
 body {
   @apply bg-neutral-200 text-gray-900;
   color: var(--foreground);

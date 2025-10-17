@@ -16,9 +16,8 @@ export default function ArtworkCard({
       onClick={onClick}
       className={`
         relative rounded-lg p-2 cursor-pointer transition-all duration-300
-        transform hover:scale-[1.02] hover:shadow-lg
-  shadow-lg
-        ${isSelected ? "ring-2 ring-yellow-600 border-transparent" : ""}
+        transform hover:scale-[1.02] hover:shadow-lg shadow-lg
+        ${isSelected ? "ring-2 ring-yellow border-transparent" : ""}
       `}>
       <img
         src={art.image || "/placeholder.png"}
