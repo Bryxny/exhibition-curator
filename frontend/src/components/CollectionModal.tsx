@@ -51,30 +51,28 @@ export default function CollectionModal() {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-zinc-900/80 z-40 flex justify-end">
-          <div className="bg-zinc-900 border w-100 h-full relative flex flex-col m-2">
-            <div className="flex-1 overflow-y-auto px-4 py-4 custom-scrollbar">
-              <button
-                className="absolute top-4 right-6 text-gray-500 hover:text-gray-300 z-50"
-                onClick={() => setIsModalOpen(false)}>
-                ✕
-              </button>
+          <div className="bg-zinc-900 border w-100 h-full relative flex flex-col overflow-hidden">
+            <button
+              className="absolute top-4 right-6 text-gray-500 hover:text-gray-300 z-50"
+              onClick={() => setIsModalOpen(false)}>
+              ✕
+            </button>
 
-              <h2
-                className="text-xl mb-2 ml-2
-             text-neutral-200 relative z-10">
-                Your Collection
-              </h2>
+            <h2 className="text-xl m-2 p-2 text-neutral-200 relative z-10">
+              Your Collection
+            </h2>
 
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-32 custom-scrollbar">
               {collection.length === 0 ? (
                 <p className="text-white relative z-10">
                   No artworks selected.
                 </p>
               ) : (
-                <div className="columns-2 gap-2 space-y-2 relative z-10">
+                <div className="columns-2 gap-4 relative z-10">
                   {collection.map((art, index) => (
                     <div
                       key={art.id}
-                      className={`break-inside-avoid relative group cursor-pointer mb-2 border-3 ${
+                      className={`break-inside-avoid relative group cursor-pointer mb-4 border-3 ${
                         selected === art.id
                           ? "border-yellow-600 shadow-lg"
                           : "border-transparent"
@@ -94,6 +92,7 @@ export default function CollectionModal() {
                         <button
                           className="absolute top-1 right-1 bg-red-700/90 text-white text-xs font-bold px-1.5 py-0.5 rounded opacity-50 z-50"
                           onClick={(e) => {
+                            e.stopPropagation();
                             removeFromCollection(art);
                             setSelected(null);
                           }}>
@@ -102,8 +101,7 @@ export default function CollectionModal() {
                       )}
 
                       <div
-                        className={`absolute inset-0 bg-black/25 flex items-center justify-center text-white font-bold transition-opacity duration-200 z-20
-                        ${
+                        className={`absolute inset-0 bg-black/25 flex items-center justify-center text-white font-bold transition-opacity duration-200 z-20 ${
                           selected === art.id
                             ? ""
                             : selected
@@ -122,9 +120,9 @@ export default function CollectionModal() {
               )}
             </div>
 
-            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-4 pointer-events-none z-20 pt-30">
+            <div className="sticky bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-4 z-20">
               <button
-                className="py-2 bg-zinc-900 text-neutral-200 border border-yellow-600 rounded-lg w-full pointer-events-auto"
+                className="py-2 bg-zinc-900 text-neutral-200 border border-yellow-600 rounded-lg w-full"
                 onClick={() => router.push("/exhibition")}>
                 Go to Exhibition
               </button>
