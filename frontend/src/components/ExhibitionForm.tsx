@@ -6,7 +6,8 @@ import {
   ShareIcon,
   BookmarkIcon,
 } from "@heroicons/react/24/outline";
-import { saveExhibition } from "@/lib/firebase";
+import { saveExhibition, db } from "@/lib/firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { SavedCollection } from "@/types/collection";
 
 interface ExhibitionFormProps {
@@ -22,31 +23,77 @@ export default function ExhibitionForm({
 }: ExhibitionFormProps) {
   const [title, setTitle] = useState("My Exhibition");
   const [isEditing, setIsEditing] = useState(false);
+  const [shareLink, setShareLink] = useState<string | null>(null);
+  const [savedId, setSavedId] = useState<string | null>(null);
+  const [shareId, setShareId] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState(false);
 
-  const handleSave = async () => {
-    if (!userId) return alert("Please log in to save!");
-    if (!artworks.length) return alert("Add at least one artwork to save!");
+  const buttonClasses =
+    "flex items-center justify-center px-4 py-2.5 border border-yellow text-yellow rounded-md bg-zinc-700 hover:bg-yellow hover:text-black transition-all w-full sm:w-auto gap-2";
 
-    try {
-      const thumbnail = artworks[0].image || "";
-      const savedDoc = await saveExhibition(userId, title, artworks, thumbnail);
+  const saveIfNeeded = async () => {
+    if (!savedId) {
+      const thumbnail = artworks[0]?.image || "";
+      const savedDoc = await saveExhibition(
+        userId!,
+        title,
+        artworks,
+        thumbnail
+      );
       setUserCollections((prev) => [
         ...prev,
         { id: savedDoc.id, title, artworks, thumbnail },
       ]);
+      setSavedId(savedDoc.id);
+      return savedDoc.id;
+    }
+    return savedId;
+  };
+
+  const handleSave = async () => {
+    if (!userId) return alert("Please log in to save!");
+    if (!artworks.length) return alert("Add at least one artwork to save!");
+    try {
+      await saveIfNeeded();
+      alert("Exhibition saved!");
       setIsEditing(false);
-      alert("Exhibition saved");
     } catch (err) {
       console.error(err);
       alert("Error saving exhibition.");
     }
   };
 
-  const buttonClasses =
-    "flex items-center justify-center px-4 py-2.5 border border-yellow text-yellow rounded-md bg-zinc-700 hover:bg-yellow hover:text-black transition-all w-full sm:w-auto gap-2";
+  const handleShare = async () => {
+    if (!userId) return alert("Please log in to share!");
+    if (!artworks.length) return alert("Add at least one artwork to share!");
+    try {
+      const userDocId = await saveIfNeeded();
+      let docId = shareId;
+      if (!shareId) {
+        const shareDocRef = doc(db, "share", crypto.randomUUID());
+        await setDoc(shareDocRef, {
+          title,
+          artworks,
+          thumbnail: artworks[0]?.image || "",
+          createdAt: serverTimestamp(),
+          originalUserDocId: userDocId,
+        });
+        docId = shareDocRef.id;
+        setShareId(docId);
+      }
+      const url = `${window.location.origin}/share/${docId}`;
+      setShareLink(url);
+      await navigator.clipboard.writeText(url);
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 3000);
+    } catch (err) {
+      console.error(err);
+      alert("Error sharing exhibition.");
+    }
+  };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 mb-12 bg-zinc-800 rounded-lg shadow-sm">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 mb-12 bg-zinc-800 rounded-lg shadow-sm relative">
       <div className="relative w-full sm:flex-1">
         {!isEditing && (
           <PencilIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400 pointer-events-none" />
@@ -69,10 +116,17 @@ export default function ExhibitionForm({
         <button onClick={handleSave} className={buttonClasses}>
           <BookmarkIcon className="w-5 h-5" /> Save
         </button>
-        <button className={buttonClasses}>
+        <button onClick={handleShare} className={buttonClasses}>
           <ShareIcon className="w-5 h-5" /> Share
         </button>
       </div>
+
+      {shareLink && showToast && (
+        <div className="absolute left-0 right-0 bottom-[-2.5rem] mx-auto bg-zinc-800 text-neutral-200 px-4 py-1 rounded-md shadow-lg text-sm flex justify-center items-center animate-fade-in-out">
+          Link copied to clipboard
+          <span className="font-semibold ml-1">{shareLink}</span>
+        </div>
+      )}
     </div>
   );
 }
