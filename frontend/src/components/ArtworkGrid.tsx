@@ -72,7 +72,7 @@ export default function ArtworkGrid({
 
   return (
     <div className="bg-neutral-200">
-      <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 gap-6 ">
+      <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 gap-6 ">
         {artworks.map((art) => (
           <div key={art.id} className="break-inside-avoid mb-6">
             <ArtworkCard
