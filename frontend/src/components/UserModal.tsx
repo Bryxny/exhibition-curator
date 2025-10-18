@@ -13,12 +13,14 @@ import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { useCollection } from "@/context/CollectionContext";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { SavedCollection } from "@/types/collection";
+import { useRouter } from "next/navigation";
 
 export default function UserModal() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const { userCollections, setUserCollections, setCollection } =
     useCollection();
+  const router = useRouter();
 
   const deleteButtonClass =
     "ml-auto text-gray-500 hover:text-gray-300 flex-shrink-0";
@@ -78,6 +80,7 @@ export default function UserModal() {
   const handleLoad = (artworks: any[]) => {
     setCollection(artworks);
     setIsModalOpen(false);
+    router.push("/exhibition");
   };
 
   const handleDelete = async (collectionId: string) => {
@@ -115,7 +118,7 @@ export default function UserModal() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-zinc-900/80 z-40 flex justify-start">
           <div className="bg-zinc-900 w-full sm:w-[400px] h-full relative flex flex-col">
-            <div className="flex-1 overflow-y-auto px-6 py-4 custom-scrollbar">
+            <div className="flex-1 px-6 py-4">
               <button
                 className="absolute top-5 right-6 text-gray-500 hover:text-gray-300 z-50"
                 onClick={() => setIsModalOpen(false)}>
@@ -153,37 +156,38 @@ export default function UserModal() {
                   <h3 className="text-neutral-200 font-medium mb-1 text-lg">
                     Saved Collections
                   </h3>
-
-                  {userCollections.length ? (
-                    <div className="flex flex-col gap-2">
-                      {userCollections.map((col) => (
-                        <div
-                          key={col.id}
-                          className={collectionCardClass}
-                          onClick={() => handleLoad(col.artworks)}>
-                          <img
-                            src={col.artworks[0]?.image || "/placeholder1.png"}
-                            alt={col.title}
-                            className="w-12 h-12 object-cover rounded-md flex-shrink-0 transition-transform duration-150 hover:scale-105"
-                          />
-                          <span className="text-white font-medium">
-                            {col.title}
-                          </span>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDelete(col.id);
-                            }}
-                            className={deleteButtonClass}
-                            aria-label={`Delete ${col.title}`}>
-                            <TrashIcon className="w-5 h-5" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-400">No saved collections yet.</p>
-                  )}
+                  <div className="overflow-y-auto max-h-[80vh] custom-scrollbar">
+                    {userCollections.length ? (
+                      <div className="flex flex-col gap-2">
+                        {userCollections.map((col) => (
+                          <div
+                            key={col.id}
+                            className={collectionCardClass}
+                            onClick={() => handleLoad(col.artworks)}>
+                            <img
+                              src={col.thumbnail || "/placeholder1.png"}
+                              alt={col.title}
+                              className="w-12 h-12 object-cover rounded-md flex-shrink-0 transition-transform duration-150 hover:scale-105"
+                            />
+                            <span className="text-white font-medium">
+                              {col.title}
+                            </span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(col.id);
+                              }}
+                              className={deleteButtonClass}
+                              aria-label={`Delete ${col.title}`}>
+                              <TrashIcon className="w-5 h-5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-400">No saved collections yet.</p>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
