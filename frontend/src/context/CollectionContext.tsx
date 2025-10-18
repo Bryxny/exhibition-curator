@@ -1,14 +1,16 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-
 import { Artwork } from "../types/artwork";
+import { SavedCollection } from "../types/collection";
 
 interface CollectionContextType {
   collection: Artwork[];
+  userCollections: SavedCollection[];
+  setCollection: React.Dispatch<React.SetStateAction<Artwork[]>>;
+  setUserCollections: React.Dispatch<React.SetStateAction<SavedCollection[]>>;
   addToCollection: (artwork: Artwork) => void;
   removeFromCollection: (artwork: Artwork) => void;
-  setCollection: React.Dispatch<React.SetStateAction<Artwork[]>>;
 }
 
 const CollectionContext = createContext<CollectionContextType | undefined>(
@@ -25,12 +27,12 @@ export const useCollection = () => {
 
 export const CollectionProvider = ({ children }: { children: ReactNode }) => {
   const [collection, setCollection] = useState<Artwork[]>([]);
+  const [userCollections, setUserCollections] = useState<SavedCollection[]>([]);
 
   const addToCollection = (artwork: Artwork) => {
-    setCollection((prev) => {
-      if (prev.some((a) => a.id === artwork.id)) return prev;
-      return [...prev, artwork];
-    });
+    setCollection((prev) =>
+      prev.some((a) => a.id === artwork.id) ? prev : [...prev, artwork]
+    );
   };
 
   const removeFromCollection = (artwork: Artwork) => {
@@ -41,9 +43,11 @@ export const CollectionProvider = ({ children }: { children: ReactNode }) => {
     <CollectionContext.Provider
       value={{
         collection,
+        setCollection,
+        userCollections,
+        setUserCollections,
         addToCollection,
         removeFromCollection,
-        setCollection,
       }}>
       {children}
     </CollectionContext.Provider>
