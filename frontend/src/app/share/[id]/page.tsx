@@ -72,7 +72,7 @@ export default function SharedExhibitionPage({ params }: ExhibitionPageProps) {
       <main className="min-h-screen w-full bg-zinc-900 overflow-y-auto">
         <Header />
         <section className="max-w-7xl mx-auto p-10 pb-32">
-          <h1 className="text-2xl sm:text-3xl text-yellow font-bold mb-6">
+          <h1 className="text-2xl sm:text-3xl text-center text-yellow font-medium mb-10">
             {exhibition!.title}
           </h1>
           {exhibition!.artworks.length ? (
