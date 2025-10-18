@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useCollection } from "../context/CollectionContext";
 import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function CollectionModal() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const router = useRouter();
   const { collection, removeFromCollection, setCollection } = useCollection();
   const [selected, setSelected] = useState<string | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
   const handleReplace = (id: string) => {
     if (!selected) {
@@ -121,11 +123,19 @@ export default function CollectionModal() {
             </div>
 
             <div className="sticky bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent px-4 py-4 z-20">
-              <button
-                className="py-2 bg-zinc-900 text-neutral-200 border border-zinc-600 hover:border-yellow rounded-lg w-full"
-                onClick={() => router.push("/exhibition")}>
-                Go to Exhibition
-              </button>
+              {pathname === "/exhibition" ? (
+                <button
+                  className="py-2 bg-zinc-900 text-neutral-200 border border-zinc-600 hover:border-yellow rounded-lg w-full"
+                  onClick={() => router.push("/")}>
+                  Edit Collection
+                </button>
+              ) : (
+                <button
+                  className="py-2 bg-zinc-900 text-neutral-200 border border-zinc-600 hover:border-yellow rounded-lg w-full"
+                  onClick={() => router.push("/exhibition")}>
+                  Go to Exhibition
+                </button>
+              )}
             </div>
           </div>
         </div>

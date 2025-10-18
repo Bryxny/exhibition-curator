@@ -2,22 +2,32 @@
 
 import { useRouter } from "next/navigation";
 import { useCollection } from "../../context/CollectionContext";
+import { useEffect } from "react";
 import ExhibitionCard from "@/components/ExhibitionCard";
+import Header from "@/components/Header";
+import ExhibitionForm from "@/components/ExhibitionForm";
 
 export default function ExhibitionPage() {
   const { collection } = useCollection();
   const router = useRouter();
 
+  useEffect(() => {
+    const original = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = "#292524";
+    return () => {
+      document.body.style.backgroundColor = original;
+    };
+  }, []);
+
   if (!collection.length) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center bg-zinc-800 text-center">
-        <p className="text-lg text-gray-700 mb-4">
+      <main className="min-h-screen w-full flex flex-col items-center justify-center bg-zinc-900 text-center text-zinc-300">
+        <p className="text-lg mb-6">
           Your exhibition is empty. Add artworks from the main page.
         </p>
         <button
           onClick={() => router.push("/")}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
+          className="px-5 py-2.5 bg-yellow text-zinc-900 rounded-md font-medium hover:bg-yellow-hover">
           Back to Curator
         </button>
       </main>
@@ -25,22 +35,20 @@ export default function ExhibitionPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-800 p-8">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Your Exhibition</h1>
-        <button
-          onClick={() => router.push("/")}
-          className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800"
-        >
-          Edit Exhibition
-        </button>
-      </div>
-
-      <div className="columns-2 md:columns-3 lg:columns-4 gap-8">
-        {collection.map((art) => (
-          <ExhibitionCard key={art.id} {...art} />
-        ))}
-      </div>
+    <main className="min-h-screen w-full bg-zinc-900 overflow-y-auto">
+      <Header />
+      <section className="max-w-7xl mx-auto p-10 pb-32">
+        <ExhibitionForm
+          initialName="My Exhibition"
+          onSave={(name) => console.log("save:", name)}
+          onShare={(name) => console.log("share:", name)}
+        />
+        <div className="mt-12 columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-8">
+          {collection.map((art) => (
+            <ExhibitionCard key={art.id} {...art} />
+          ))}
+        </div>
+      </section>
     </main>
   );
 }

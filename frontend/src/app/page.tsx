@@ -12,8 +12,8 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <div className="m-10">
-        <section className="text-center mt-18 mb-14 px-6">
+      <div className="bg-neutral-200 w-full">
+        <section className="text-center mb-14 pt-14 px-10">
           <h2 className="text-3xl font-semibold mb-2 text-zinc-600">
             Curate Your Own Exhibition
           </h2>
@@ -22,8 +22,10 @@ export default function Home() {
             add it to your personal collection.
           </p>
         </section>
-        <SearchBar setTitle={setTitle} setArtist={setArtist} />
-        <ArtworkGrid title={title} artist={artist} />
+        <div className="px-10 pb-20">
+          <SearchBar setTitle={setTitle} setArtist={setArtist} />
+          <ArtworkGrid title={title} artist={artist} />
+        </div>
       </div>
     </div>
   );
