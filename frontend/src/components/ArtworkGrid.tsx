@@ -1,64 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useCollection } from "../context/CollectionContext";
-import { Artwork } from "../types/artwork";
-
+import { useArtworks } from "@/hooks/useArtworks";
 import ArtworkCard from "./ArtworkCard";
+import { Artwork } from "@/types/artwork";
 
-export default function ArtworkGrid({
-  title,
-  artist,
-}: {
+interface ArtworkGridProps {
   title: string;
   artist: string;
-}) {
-  const [artworks, setArtworks] = useState<Artwork[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [offset, setOffset] = useState(0);
-  const [endOfResults, setEndOfResults] = useState(false);
-  const limit = 12;
+}
 
+export default function ArtworkGrid({ title, artist }: ArtworkGridProps) {
   const { collection, addToCollection, removeFromCollection } = useCollection();
-
-  const fetchArtworks = async (currentOffset: number, reset = false) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch(
-        `/api/search?title=${encodeURIComponent(
-          title
-        )}&artist=${encodeURIComponent(
-          artist
-        )}&limit=${limit}&offset=${currentOffset}`
-      );
-      const data: Artwork[] = await res.json();
-      if (!Array.isArray(data)) throw new Error("Invalid API response");
-
-      setArtworks((prev) => (reset ? data : [...prev, ...data]));
-      setEndOfResults(data.length !== limit);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!title && !artist) return;
-    setOffset(0);
-    setArtworks([]);
-    setEndOfResults(false);
-    fetchArtworks(0, true);
-  }, [title, artist]);
-
-  const handleLoadMore = () => {
-    const newOffset = offset + limit;
-    setOffset(newOffset);
-    fetchArtworks(newOffset);
-  };
+  const { artworks, loading, loadingMore, error, loadMore, hasMore } =
+    useArtworks({ title, artist, pageSize: 20 });
 
   const toggleSelect = (art: Artwork) => {
     if (collection.some((a) => a.id === art.id)) removeFromCollection(art);
@@ -71,8 +26,8 @@ export default function ArtworkGrid({
   if (!artworks.length) return <p className="p-6">No results found.</p>;
 
   return (
-    <div className="bg-neutral-200">
-      <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 gap-6 ">
+    <div className="bg-neutral-200 p-4">
+      <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 gap-6">
         {artworks.map((art) => (
           <div key={art.id} className="break-inside-avoid mb-6">
             <ArtworkCard
@@ -84,13 +39,13 @@ export default function ArtworkGrid({
         ))}
       </div>
 
-      {!endOfResults && (
-        <div className="flex justify-center mt-6">
+      {hasMore && (
+        <div className="flex justify-center my-6">
           <button
-            onClick={handleLoadMore}
-            disabled={loading}
+            onClick={loadMore}
+            disabled={!artworks.length || loadingMore}
             className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg disabled:opacity-50">
-            {loading ? "Loading..." : "Load More"}
+            {loadingMore ? "Loading more..." : "Load More"}
           </button>
         </div>
       )}
