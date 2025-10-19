@@ -5,6 +5,12 @@ const HARVARD_OBJECT_API = `${HARVARD_API_BASE}/object`;
 const HARVARD_PERSON_API = `${HARVARD_API_BASE}/person`;
 const MET_API_BASE = "https://collectionapi.metmuseum.org/public/collection/v1";
 
+interface HarvardRecord {
+  id: string;
+  title: string;
+  artist?: string;
+}
+
 async function fetchJson(url: string) {
   try {
     const res = await fetch(url);
@@ -178,7 +184,7 @@ async function fetchHarvardArtworks(
 
   const data = await fetchJson(`${HARVARD_OBJECT_API}?${params.join("&")}`);
   return (data?.records || [])
-    .map((rec) => mapArtwork(rec, "Harvard"))
+    .map((rec: HarvardRecord) => mapArtwork(rec, "Harvard"))
     .filter(Boolean)
     .slice(0, limit);
 }
