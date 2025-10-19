@@ -15,7 +15,7 @@ export function useArtworks({
 }: UseArtworksOptions) {
   const { artworks, setArtworks } = useArtworksContext();
   const [allResults, setAllResults] = useState<Artwork[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [loadingDeep, setLoadingDeep] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
@@ -72,7 +72,6 @@ export function useArtworks({
 
   useEffect(() => {
     if (!title && !artist) return;
-
     setArtworks([]);
     setAllResults([]);
     setPage(1);
