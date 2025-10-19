@@ -28,18 +28,6 @@ export default function UserModal() {
 
   useEffect(() => {
     if (isModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isModalOpen]);
-
-  useEffect(() => {
-    if (isModalOpen) {
       const scrollY = window.scrollY;
       document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
@@ -152,26 +140,24 @@ export default function UserModal() {
 
       {isModalOpen && (
         <div
-          className="fixed inset-0 bg-zinc-900/80 z-40 h-screen flex justify-start
-        "
+          className="fixed inset-0 bg-zinc-900/80 z-40 flex justify-start"
           style={{ paddingBottom: "calc(20px + env(safe-area-inset-bottom))" }}>
           <div className="bg-zinc-900 w-full sm:w-[400px] h-screen relative flex flex-col">
-            <div className="flex-1 px-6 py-4">
+            <div className="flex-1 flex flex-col px-6 py-4 overflow-hidden">
               <button
                 className="absolute top-5 right-6 text-gray-500 hover:text-gray-300 z-50"
                 onClick={() => setIsModalOpen(false)}>
                 ✕
               </button>
+
               {!user ? (
                 <div className="flex flex-col gap-10 relative z-10">
                   <p className="text-white text-xl font-bold pb-2 border-b border-yellow">
                     Profile
                   </p>
-
                   <p className="text-white text-lg mt-4">
                     Please log in to view your saved collections.
                   </p>
-
                   <button
                     onClick={handleLogin}
                     className={
@@ -186,15 +172,15 @@ export default function UserModal() {
                   </button>
                 </div>
               ) : (
-                <div className="flex flex-col gap-4 relative z-10">
+                <div className="flex flex-col gap-4 relative z-10 h-full">
                   <p className="text-white text-xl font-bold pb-4 mt-1 border-b border-yellow">
                     Hello, {user.displayName ?? "User"}
                   </p>
-
                   <h4 className="text-neutral-200 font-medium mb-1 text-lg">
                     Saved Collections
                   </h4>
-                  <div className="overflow-y-auto max-h-[75vh] custom-scrollbar">
+
+                  <div className="flex-1 overflow-y-auto custom-scrollbar">
                     {userCollections.length ? (
                       <div className="flex flex-col gap-2">
                         {userCollections.map((col) => (
