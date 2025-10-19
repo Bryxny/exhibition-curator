@@ -123,7 +123,7 @@ export default function UserModal() {
 
       {isModalOpen && (
         <div className="fixed inset-0 bg-zinc-900/80 z-40 flex justify-start">
-          <div className="bg-zinc-900 w-full sm:w-[400px] h-full relative flex flex-col">
+          <div className="bg-zinc-900 w-full sm:w-[400px] h-screen relative flex flex-col">
             <div className="flex-1 px-6 py-4">
               <button
                 className="absolute top-5 right-6 text-gray-500 hover:text-gray-300 z-50"
