@@ -1,0 +1,14 @@
+{
+  "name": "Frame & Curate",
+  "short_name": "F&C",
+  "description": "Curate and display artworks from museums worldwide",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1f2937",
+  "theme_color": "#facc15",
+  "icons": [
+    { "src": "/icons/Cart.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/Card.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
