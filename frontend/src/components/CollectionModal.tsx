@@ -91,10 +91,12 @@ export default function CollectionModal() {
       </div>
 
       {isModalOpen && (
-        <div
-          className="fixed inset-0 bg-zinc-900/80 z-40 h-screen flex justify-end"
-          style={{ paddingBottom: "calc(20px + env(safe-area-inset-bottom))" }}>
-          <div className="bg-zinc-900 border w-100 h-full w-full sm:w-[400px] relative flex flex-col overflow-hidden">
+        <div className="fixed inset-0 bg-zinc-900/80 z-40 h-screen flex justify-end">
+          <div
+            className="bg-zinc-900 border w-full sm:w-[400px] h-full relative flex flex-col"
+            style={{
+              paddingBottom: "calc(20px + env(safe-area-inset-bottom))",
+            }}>
             <button
               className="absolute top-4 right-6 text-gray-500 hover:text-gray-300 z-50"
               onClick={() => setIsModalOpen(false)}>
@@ -105,7 +107,7 @@ export default function CollectionModal() {
               Your Collection
             </h2>
 
-            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-32 custom-scrollbar">
+            <div className="flex-1 overflow-y-auto px-4 pt-4 pb-24 custom-scrollbar">
               {collection.length === 0 ? (
                 <p className="text-neutral-200 relative z-10">
                   No artworks selected.
@@ -162,8 +164,9 @@ export default function CollectionModal() {
                 </div>
               )}
             </div>
+
             <div
-              className="sticky bottom-2 left-0 w-full bg-zinc-900/90 px-4 py-4 z-20 "
+              className="sticky bottom-0 left-0 w-full bg-zinc-900/90 px-4 py-4 z-20"
               style={{
                 paddingBottom: "calc(20px + env(safe-area-inset-bottom))",
               }}>

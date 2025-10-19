@@ -28,7 +28,6 @@ export default function ExhibitionForm({
   const [isEditing, setIsEditing] = useState(false);
   const [shareLink, setShareLink] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
-  const [shareId, setShareId] = useState<string | null>(null);
   const [toast, setToast] = useState<{ message: string; link?: string } | null>(
     null
   );
@@ -39,7 +38,7 @@ export default function ExhibitionForm({
   useEffect(() => {
     setTitle(collectionTitle);
     setSavedId(null);
-    setShareId(null);
+    setShareLink(null);
   }, [collectionTitle]);
 
   const handleTitleChange = (newTitle: string) => {
@@ -53,6 +52,8 @@ export default function ExhibitionForm({
   };
 
   const saveIfNeeded = async () => {
+    if (!userId) throw new Error("No userId");
+
     const thumbnail = artworks[0]?.image || "";
 
     if (savedId) {
@@ -65,7 +66,7 @@ export default function ExhibitionForm({
       return savedId;
     }
 
-    const savedDoc = await saveExhibition(userId!, title, artworks, thumbnail);
+    const savedDoc = await saveExhibition(userId, title, artworks, thumbnail);
     setUserCollections((prev) => [
       ...prev,
       { id: savedDoc.id, title, artworks, thumbnail },
@@ -91,22 +92,20 @@ export default function ExhibitionForm({
     if (!userId) return showToast("Please log in to share!");
     if (!artworks.length)
       return showToast("Add at least one artwork to share!");
+
     try {
       const userDocId = await saveIfNeeded();
-      let docId = shareId;
-      if (!shareId) {
-        const shareDocRef = doc(db, "share", crypto.randomUUID());
-        await setDoc(shareDocRef, {
-          title,
-          artworks,
-          thumbnail: artworks[0]?.image || "",
-          createdAt: serverTimestamp(),
-          originalUserDocId: userDocId,
-        });
-        docId = shareDocRef.id;
-        setShareId(docId);
-      }
-      const url = `${window.location.origin}/share/${docId}`;
+
+      const shareDocRef = doc(db, "share", crypto.randomUUID());
+      await setDoc(shareDocRef, {
+        title,
+        artworks,
+        thumbnail: artworks[0]?.image || "",
+        createdAt: serverTimestamp(),
+        originalUserDocId: userDocId,
+      });
+
+      const url = `${window.location.origin}/share/${shareDocRef.id}`;
       setShareLink(url);
       await navigator.clipboard.writeText(url);
       showToast("Link copied to clipboard", url);
