@@ -42,13 +42,13 @@ export default function ExhibitionCard(art: Artwork) {
             onClick={(e) => e.stopPropagation()}
             className="relative bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row border border-zinc-700">
             <button
-              className="absolute top-3 right-3 text-zinc-400 hover:text-yellow transition-colors"
+              className="absolute top-3 right-3 z-40 text-zinc-400 hover:text-yellow transition-colors"
               onClick={() => setModalOpen(false)}>
               <XMarkIcon className="w-7 h-7" />
             </button>
 
-            <div className="modal-content flex flex-col md:flex-row">
-              <div className="md:w-1/2 flex items-center justify-center bg-zinc-950 p-6 border-r border-zinc-800">
+            <div className="modal-content flex flex-col md:flex-row mt-10">
+              <div className="md:w-1/2 flex items-center justify-center bg-zinc-950 m-6 border-r border-zinc-800">
                 <img
                   src={art.image}
                   alt={art.title}

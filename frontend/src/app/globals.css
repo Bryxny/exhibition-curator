@@ -34,8 +34,8 @@ body {
 
 html,
 body {
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: none;
 }
 
 .modal-content {
