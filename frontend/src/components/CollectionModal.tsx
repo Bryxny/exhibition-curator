@@ -22,6 +22,30 @@ export default function CollectionModal() {
     };
   }, [isModalOpen]);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+    } else {
+      const scrollY = -parseInt(document.body.style.top || "0");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
+    }
+
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+    };
+  }, [isModalOpen]);
+
   const handleReplace = (id: string) => {
     if (!selected) {
       setSelected(id);
@@ -67,7 +91,7 @@ export default function CollectionModal() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-zinc-900/80 z-40 flex justify-end">
+        <div className="fixed inset-0 bg-zinc-900/80 z-40 h-screen flex justify-end">
           <div className="bg-zinc-900 border w-100 h-full w-full sm:w-[400px] relative flex flex-col overflow-hidden">
             <button
               className="absolute top-4 right-6 text-gray-500 hover:text-gray-300 z-50"

@@ -30,6 +30,7 @@ export default function ExhibitionCard(art: Artwork) {
       document.body.style.overflow = "";
     };
   }, [modalOpen]);
+
   return (
     <>
       <div
@@ -59,7 +60,7 @@ export default function ExhibitionCard(art: Artwork) {
 
       {modalOpen && art && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex min-h-screem items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex h-screen items-center justify-center p-8 select-none"
           onClick={() => setModalOpen(false)}>
           <div
             onClick={(e) => e.stopPropagation()}

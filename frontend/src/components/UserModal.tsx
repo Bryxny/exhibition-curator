@@ -34,6 +34,30 @@ export default function UserModal() {
     };
   }, [isModalOpen]);
 
+  useEffect(() => {
+    if (isModalOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+    } else {
+      const scrollY = -parseInt(document.body.style.top || "0");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
+    }
+
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+    };
+  }, [isModalOpen]);
+
   const deleteButtonClass =
     "ml-auto text-gray-500 hover:text-gray-300 flex-shrink-0";
 
@@ -122,7 +146,7 @@ export default function UserModal() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-zinc-900/80 z-40 min-h-screen flex justify-start">
+        <div className="fixed inset-0 bg-zinc-900/80 z-40 h-screen flex justify-start">
           <div className="bg-zinc-900 w-full sm:w-[400px] h-screen relative flex flex-col">
             <div className="flex-1 px-6 py-4">
               <button
