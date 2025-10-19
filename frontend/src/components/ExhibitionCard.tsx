@@ -9,12 +9,27 @@ export default function ExhibitionCard(art: Artwork) {
 
   useEffect(() => {
     if (modalOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
       document.body.style.overflow = "hidden";
     } else {
+      const scrollY = -parseInt(document.body.style.top || "0");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
       document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
     }
 
     return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
       document.body.style.overflow = "";
     };
   }, [modalOpen]);
@@ -68,7 +83,7 @@ export default function ExhibitionCard(art: Artwork) {
             </div>
 
             <div className="md:w-1/2 p-6 flex flex-col text-zinc-100 overflow-y-auto max-h-[75vh] space-y-2">
-              <h2 className="text-3xl font-semibold text-yellow mb-1">
+              <h2 className="text-3xl mt-2 font-semibold text-yellow mb-1">
                 {art.title || "Untitled"}
               </h2>
               <h3 className="text-lg italic mb-4 text-zinc-400">
