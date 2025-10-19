@@ -53,7 +53,6 @@ export function useArtworks({
         return [...prev, ...deepData.filter((a) => !seen.has(a.id))];
       });
     } catch (err) {
-      console.error(err);
       setError("Failed to load artworks");
       setLoading(false);
     } finally {

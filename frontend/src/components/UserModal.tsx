@@ -54,9 +54,7 @@ export default function UserModal() {
         };
       });
       setUserCollections(saved);
-    } catch (err) {
-      console.error("Error loading collections:", err);
-    }
+    } catch (err) {}
   };
 
   const handleLogin = async () => {
@@ -65,9 +63,7 @@ export default function UserModal() {
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
       await loadCollections(result.user.uid);
-    } catch (err) {
-      console.error("Login error:", err);
-    }
+    } catch (err) {}
   };
 
   const handleLogout = async () => {
@@ -90,9 +86,7 @@ export default function UserModal() {
     try {
       await deleteDoc(doc(db, `users/${user.uid}/collections/${collectionId}`));
       setUserCollections(userCollections.filter((c) => c.id !== collectionId));
-    } catch (err) {
-      console.error("Error deleting collection:", err);
-    }
+    } catch (err) {}
   };
 
   return (

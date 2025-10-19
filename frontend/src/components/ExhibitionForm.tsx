@@ -58,15 +58,14 @@ export default function ExhibitionForm({
   };
 
   const handleSave = async () => {
-    if (!userId) return showToast("Please log in to save!");
-    if (!artworks.length) return showToast("Add at least one artwork to save!");
+    if (!userId) return showToast("Please log in to save");
+    if (!artworks.length) return showToast("Add at least one artwork to save");
     try {
       await saveIfNeeded();
-      showToast("Exhibition saved!");
+      showToast("Exhibition saved");
       setIsEditing(false);
     } catch (err) {
-      console.error(err);
-      showToast("Error saving exhibition.");
+      showToast("Error saving exhibition");
     }
   };
 
@@ -94,7 +93,6 @@ export default function ExhibitionForm({
       await navigator.clipboard.writeText(url);
       showToast("Link copied to clipboard", url);
     } catch (err) {
-      console.error(err);
       showToast("Error sharing exhibition.");
     }
   };

@@ -41,7 +41,6 @@ export default function SharedExhibitionPage({ params }: ExhibitionPageProps) {
 
         setExhibition(docSnap.data() as SavedCollection);
       } catch (err) {
-        console.error("Error fetching exhibition:", err);
         setError("Failed to load exhibition");
       } finally {
         setLoading(false);

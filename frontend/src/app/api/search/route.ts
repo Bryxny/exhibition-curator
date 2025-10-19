@@ -99,13 +99,9 @@ async function fetchMetArtworks(
         if (!res.ok) {
           if (res.status >= 500 || res.status === 0) {
             if (attempt <= retries) {
-              console.warn(
-                `Fetch failed (attempt ${attempt}) for ${url}. Retrying in ${retryDelay}ms`
-              );
               await new Promise((r) => setTimeout(r, retryDelay));
             } else throw new Error(`Fetch failed with status ${res.status}`);
           } else {
-            console.warn(`Skipping ${url}, status: ${res.status}`);
             return null;
           }
         } else {
@@ -113,15 +109,8 @@ async function fetchMetArtworks(
         }
       } catch (err) {
         if (attempt <= retries) {
-          console.warn(
-            `Fetch error (attempt ${attempt}) for ${url}. Retrying in ${retryDelay}ms`
-          );
           await new Promise((r) => setTimeout(r, retryDelay));
         } else {
-          console.error(
-            `Failed to fetch ${url} after ${retries + 1} attempts`,
-            err
-          );
           return null;
         }
       }
@@ -218,7 +207,6 @@ export async function GET(req: NextRequest) {
     const artworks = [...metArtworks, ...harvardArtworks];
     return NextResponse.json(artworks.slice(0, limit));
   } catch (err) {
-    console.error("API error:", err);
     return NextResponse.json([], { status: 500 });
   }
 }
