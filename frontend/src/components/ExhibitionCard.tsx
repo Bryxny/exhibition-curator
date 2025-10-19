@@ -48,11 +48,11 @@ export default function ExhibitionCard(art: Artwork) {
           </div>
         </div>
 
-        <div className="bg-neutral-100 transition-all duration-300 mt-2 text-center shadow-sm max-h-8 py-1 max-w-40 px-2 scale-100">
-          <h2 className="font-semibold leading-tight transition-all duration-300 text-black text-[9px] opacity-70">
+        <div className="bg-neutral-100 transition-all duration-300 mt-2 text-center shadow-sm py-1 px-2 max-w-[160px] w-full flex flex-col items-center break-words">
+          <h2 className="font-semibold leading-tight text-black text-[9px] opacity-70">
             {art.title}
           </h2>
-          <p className="transition-all duration-300 text-black text-[8px] opacity-50">
+          <p className="text-black text-[8px] opacity-50 break-words">
             {art.artist}
           </p>
         </div>
@@ -60,86 +60,88 @@ export default function ExhibitionCard(art: Artwork) {
 
       {modalOpen && art && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex h-screen items-center justify-center p-8 select-none"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8 select-none"
           style={{ paddingBottom: "calc(20px + env(safe-area-inset-bottom))" }}
           onClick={() => setModalOpen(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row border border-zinc-700 mb-10">
+            className="relative bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row border border-zinc-700 max-h-[90vh] overflow-auto">
             <button
               className="absolute top-3 right-3 z-40 text-zinc-400 hover:text-yellow transition-colors"
               onClick={() => setModalOpen(false)}>
               <XMarkIcon className="w-7 h-7" />
             </button>
 
-            <div className="modal-content flex flex-col md:flex-row mt-10">
-              <div className="md:w-1/2 flex items-center justify-center m-6">
+            <div className="flex flex-col md:flex-row w-full">
+              {/* Image */}
+              <div className="md:w-1/2 flex items-center justify-center p-4 md:p-6">
                 <img
                   src={art.image}
                   alt={art.title}
-                  className="max-h-[60vh] object-contain rounded-lg"
+                  className="max-h-[50vh] md:max-h-[70vh] object-contain rounded-lg"
                 />
               </div>
 
-              <div className="md:w-1/2 p-6 flex flex-col text-zinc-100 max-h-[60vh] space-y-2">
-                <h2 className="text-3xl font-semibold text-yellow mb-1">
+              {/* Info */}
+              <div className="md:w-1/2 p-4 md:p-6 flex flex-col text-zinc-100 space-y-2 overflow-auto">
+                <h2 className="text-2xl sm:text-3xl font-semibold text-yellow mb-1 truncate">
                   {art.title || "Untitled"}
                 </h2>
-                <h3 className="text-lg italic mb-4 text-zinc-400">
+                <h3 className="text-base sm:text-lg italic mb-2 text-zinc-400 truncate">
                   {art.artist || "Unknown artist"}
                 </h3>
 
-                <div className="space-y-1.5 text-sm">
+                <div className="space-y-1 text-sm flex flex-col">
                   {art.objectDate && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Date:</span>{" "}
                       {art.objectDate}
                     </p>
                   )}
                   {art.period && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Period:</span>{" "}
                       {art.period}
                     </p>
                   )}
                   {art.culture && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Culture:</span>{" "}
                       {art.culture}
                     </p>
                   )}
                   {art.medium && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Medium:</span>{" "}
                       {art.medium}
                     </p>
                   )}
                   {art.dimensions && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Dimensions:</span>{" "}
                       {art.dimensions}
                     </p>
                   )}
                   {art.department && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Department:</span>{" "}
                       {art.department}
                     </p>
                   )}
                   {art.classification && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Classification:</span>{" "}
                       {art.classification}
                     </p>
                   )}
                   {art.rightsAndReproduction && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Rights:</span>{" "}
                       {art.rightsAndReproduction}
                     </p>
                   )}
                   {art.source && (
-                    <p>
+                    <p className="break-words">
                       <span className="text-zinc-500">Source:</span>{" "}
                       {art.source}
                     </p>
