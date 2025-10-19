@@ -107,8 +107,14 @@ export default function ExhibitionForm({
 
       const url = `${window.location.origin}/share/${shareDocRef.id}`;
       setShareLink(url);
-      await navigator.clipboard.writeText(url);
-      showToast("Link copied to clipboard", url);
+
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast("Link copied to clipboard", url);
+      } catch {
+        window.prompt("Copy this link", url);
+        showToast("Copy the link manually", url);
+      }
     } catch (err) {
       console.error(err);
       showToast("Error sharing exhibition.");
