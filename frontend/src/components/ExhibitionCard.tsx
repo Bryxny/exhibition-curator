@@ -61,6 +61,7 @@ export default function ExhibitionCard(art: Artwork) {
       {modalOpen && art && (
         <div
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex h-screen items-center justify-center p-8 select-none"
+          style={{ paddingBottom: "calc(20px + env(safe-area-inset-bottom))" }}
           onClick={() => setModalOpen(false)}>
           <div
             onClick={(e) => e.stopPropagation()}

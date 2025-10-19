@@ -91,7 +91,9 @@ export default function CollectionModal() {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-zinc-900/80 z-40 h-screen flex justify-end">
+        <div
+          className="fixed inset-0 bg-zinc-900/80 z-40 h-screen flex justify-end"
+          style={{ paddingBottom: "calc(20px + env(safe-area-inset-bottom))" }}>
           <div className="bg-zinc-900 border w-100 h-full w-full sm:w-[400px] relative flex flex-col overflow-hidden">
             <button
               className="absolute top-4 right-6 text-gray-500 hover:text-gray-300 z-50"
