@@ -149,13 +149,13 @@ export default function UserModal() {
                 </div>
               ) : (
                 <div className="flex flex-col gap-4 relative z-10">
-                  <p className="text-white text-xl font-bold pb-4 border-b border-yellow">
+                  <p className="text-white text-xl font-bold pb-4 mt-1 border-b border-yellow">
                     Hello, {user.displayName ?? "User"}
                   </p>
 
-                  <h3 className="text-neutral-200 font-medium mb-1 text-lg">
+                  <h4 className="text-neutral-200 font-medium mb-1 text-lg">
                     Saved Collections
-                  </h3>
+                  </h4>
                   <div className="overflow-y-auto max-h-[80vh] custom-scrollbar">
                     {userCollections.length ? (
                       <div className="flex flex-col gap-2">

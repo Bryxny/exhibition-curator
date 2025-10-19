@@ -26,7 +26,9 @@ export default function ExhibitionForm({
   const [shareLink, setShareLink] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
   const [shareId, setShareId] = useState<string | null>(null);
-  const [showToast, setShowToast] = useState(false);
+  const [toast, setToast] = useState<{ message: string; link?: string } | null>(
+    null
+  );
 
   const buttonClasses =
     "flex items-center justify-center px-4 py-2.5 border border-yellow text-yellow rounded-md bg-zinc-700 hover:bg-yellow hover:text-black transition-all w-full sm:w-auto gap-2";
@@ -50,22 +52,28 @@ export default function ExhibitionForm({
     return savedId;
   };
 
+  const showToast = (message: string, link?: string) => {
+    setToast({ message, link });
+    setTimeout(() => setToast(null), 3000);
+  };
+
   const handleSave = async () => {
-    if (!userId) return alert("Please log in to save!");
-    if (!artworks.length) return alert("Add at least one artwork to save!");
+    if (!userId) return showToast("Please log in to save!");
+    if (!artworks.length) return showToast("Add at least one artwork to save!");
     try {
       await saveIfNeeded();
-      alert("Exhibition saved!");
+      showToast("Exhibition saved!");
       setIsEditing(false);
     } catch (err) {
       console.error(err);
-      alert("Error saving exhibition.");
+      showToast("Error saving exhibition.");
     }
   };
 
   const handleShare = async () => {
-    if (!userId) return alert("Please log in to share!");
-    if (!artworks.length) return alert("Add at least one artwork to share!");
+    if (!userId) return showToast("Please log in to share!");
+    if (!artworks.length)
+      return showToast("Add at least one artwork to share!");
     try {
       const userDocId = await saveIfNeeded();
       let docId = shareId;
@@ -84,11 +92,10 @@ export default function ExhibitionForm({
       const url = `${window.location.origin}/share/${docId}`;
       setShareLink(url);
       await navigator.clipboard.writeText(url);
-      setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000);
+      showToast("Link copied to clipboard", url);
     } catch (err) {
       console.error(err);
-      alert("Error sharing exhibition.");
+      showToast("Error sharing exhibition.");
     }
   };
 
@@ -121,10 +128,12 @@ export default function ExhibitionForm({
         </button>
       </div>
 
-      {shareLink && showToast && (
+      {toast && (
         <div className="absolute left-0 right-0 bottom-[-2.5rem] mx-auto bg-zinc-800 text-neutral-200 px-4 py-1 rounded-md shadow-lg text-sm flex justify-center items-center animate-fade-in-out">
-          Link copied to clipboard
-          <span className="font-semibold ml-1">{shareLink}</span>
+          {toast.message}
+          {toast.link && (
+            <span className="font-semibold ml-1">{toast.link}</span>
+          )}
         </div>
       )}
     </div>

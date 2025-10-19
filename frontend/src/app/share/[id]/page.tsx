@@ -21,6 +21,14 @@ export default function SharedExhibitionPage({ params }: ExhibitionPageProps) {
   const router = useRouter();
 
   useEffect(() => {
+    const original = document.body.style.backgroundColor;
+    document.body.style.backgroundColor = "#292524";
+    return () => {
+      document.body.style.backgroundColor = original;
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchExhibition = async () => {
       try {
         const docRef = doc(db, "share", id);
