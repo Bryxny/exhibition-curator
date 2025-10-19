@@ -25,10 +25,10 @@ export default function ArtworkGrid({ title, artist }: ArtworkGridProps) {
     return (
       <div className="flex flex-col justify-center items-center p-16 min-h-[300px]">
         <div className="animate-spin rounded-full h-14 w-14 border-4 border-zinc-300 border-t-zinc-800 mb-6"></div>
-        <p className="text-lg font-semibold text-zinc-800">
+        <p className="text-lg font-semibold text-center text-zinc-800">
           Loading artworks...
         </p>
-        <p className="text-sm text-zinc-500 mt-1">
+        <p className="text-sm text-zinc-500 text-center mt-1">
           Please wait while we fetch the best results for you.
         </p>
       </div>
@@ -54,7 +54,7 @@ export default function ArtworkGrid({ title, artist }: ArtworkGridProps) {
     );
 
   return (
-    <div className="p-4">
+    <div className="">
       <div className="columns-2 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 2xl:columns-6 gap-6">
         {artworks.map((art) => (
           <div key={art.id} className="break-inside-avoid mb-6">

@@ -32,7 +32,10 @@ export default function ArtworkCard({
         <p className="text-xs text-gray-600">
           {art.artist || "Unknown Artist"}
         </p>
-        <p className="text-[10px] text-gray-500 mt-1 italic">{art.source}</p>
+        <p className="text-[11px] text-gray-500 mt-1 italic">{art.source}</p>
+        <p className="text-[11px] text-gray-500 mt-1 italic">
+          {art.objectDate}
+        </p>
       </div>
     </div>
   );

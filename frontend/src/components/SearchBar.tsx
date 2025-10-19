@@ -28,29 +28,44 @@ export default function SearchBar({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col sm:flex-row gap-2 p-3 mb-5 bg-zinc-800 rounded-lg text-white shadow-sm">
-      <input
-        type="text"
-        placeholder={`Search by ${searchType}...`}
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        className="w-full sm:flex-1 border border-zinc-600 rounded-md p-2 text-white bg-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-yellow"
-      />
+      className="flex flex-col sm:flex-row gap-2 p-3 mb-5 bg-zinc-800 rounded-lg text-white shadow-sm"
+      aria-label="Artwork search form">
+      <div className="w-full sm:flex-1">
+        <label htmlFor="search-input" className="sr-only">
+          Search query
+        </label>
+        <input
+          id="search-input"
+          type="text"
+          placeholder={`Search by ${searchType}...`}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="w-full border border-zinc-600 rounded-md p-2 text-white bg-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-yellow"
+        />
+      </div>
 
       <div className="relative w-full sm:w-40">
+        <label htmlFor="search-type" className="sr-only">
+          Search type
+        </label>
         <select
+          id="search-type"
           value={searchType}
           onChange={(e) => setSearchType(e.target.value as "title" | "artist")}
           className="appearance-none w-full border border-zinc-600 rounded-md p-2 pr-8 bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow">
           <option value="title">Title</option>
           <option value="artist">Artist</option>
         </select>
-        <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-white">
+        <div
+          className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-white"
+          aria-hidden="true">
           ▼
         </div>
       </div>
 
-      <button className="w-full sm:w-auto border border-yellow bg-yellow text-zinc-900 py-2 px-4 rounded-md font-medium hover:bg-yellow-hover">
+      <button
+        type="submit"
+        className="w-full sm:w-auto border border-yellow bg-yellow text-zinc-900 py-2 px-4 rounded-md font-medium hover:bg-yellow-hover focus:outline-none focus:ring-2 focus:ring-yellow">
         Search
       </button>
     </form>

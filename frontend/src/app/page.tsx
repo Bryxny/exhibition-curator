@@ -14,10 +14,10 @@ export default function Home() {
       <Header />
       <div className="bg-neutral-200 w-full">
         <section className="text-center mb-14 pt-14 px-10">
-          <h2 className="text-3xl font-semibold mb-2 text-zinc-600">
+          <h2 className="text-3xl font-semibold mb-2 text-zinc-700">
             Curate Your Own Exhibition
           </h2>
-          <p className="text-zinc-400 max-w-xl mx-auto">
+          <p className="text-zinc-600 max-w-xl mx-auto">
             Search artworks from our selection of museums. Click any piece to
             add it to your personal collection.
           </p>
