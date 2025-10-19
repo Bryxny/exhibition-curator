@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCollection } from "../context/CollectionContext";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -9,6 +9,18 @@ export default function CollectionModal() {
   const [selected, setSelected] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isModalOpen]);
 
   const handleReplace = (id: string) => {
     if (!selected) {

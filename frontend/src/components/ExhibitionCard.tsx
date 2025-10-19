@@ -1,11 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Artwork } from "../types/artwork";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function ExhibitionCard(art: Artwork) {
   const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (modalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [modalOpen]);
 
   return (
     <>

@@ -22,6 +22,18 @@ export default function UserModal() {
     useCollection();
   const router = useRouter();
 
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isModalOpen]);
+
   const deleteButtonClass =
     "ml-auto text-gray-500 hover:text-gray-300 flex-shrink-0";
 
