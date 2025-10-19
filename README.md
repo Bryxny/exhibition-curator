@@ -2,7 +2,7 @@
 
 **Frame and Curate** is a web application that allows users to create personalized virtual exhibitions from multiple museum and university collections. Users can search and select artworks to curate exhibitions, view detailed information, and share their creations.  
 
-- [**Live Demo**](https://frameandcurate.vercel.app/exhibition)
+- [**Live Demo**](https://frameandcurate.vercel.app)
   
 ---
 
