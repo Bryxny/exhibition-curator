@@ -113,7 +113,6 @@ export default function ExhibitionForm({
         showToast("Link copied to clipboard", url);
       } catch {
         window.prompt("Copy this link", url);
-        showToast("Copy the link manually", url);
       }
     } catch (err) {
       console.error(err);
