@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <div className="bg-neutral-200 w-full">
+      <div className="bg-neutral-200 w-full min-h-screen">
         <section className="text-center mb-14 pt-14 px-10">
           <h2 className="text-3xl font-semibold mb-2 text-zinc-700">
             Curate Your Own Exhibition
