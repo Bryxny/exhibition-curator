@@ -1,38 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Artwork } from "../types/artwork";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function ExhibitionCard(art: Artwork) {
   const [modalOpen, setModalOpen] = useState(false);
-
-  useEffect(() => {
-    if (modalOpen) {
-      const scrollY = window.scrollY;
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.left = "0";
-      document.body.style.right = "0";
-      document.body.style.overflow = "hidden";
-    } else {
-      const scrollY = -parseInt(document.body.style.top || "0");
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.overflow = "";
-      window.scrollTo(0, scrollY);
-    }
-
-    return () => {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.left = "";
-      document.body.style.right = "";
-      document.body.style.overflow = "";
-    };
-  }, [modalOpen]);
 
   return (
     <>
@@ -67,81 +40,86 @@ export default function ExhibitionCard(art: Artwork) {
           onClick={() => setModalOpen(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row overflow-hidden border border-zinc-700">
+            className="relative bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row border border-zinc-700">
             <button
               className="absolute top-3 right-3 text-zinc-400 hover:text-yellow transition-colors"
               onClick={() => setModalOpen(false)}>
               <XMarkIcon className="w-7 h-7" />
             </button>
 
-            <div className="md:w-1/2 flex items-center justify-center bg-zinc-950 p-6 border-r border-zinc-800">
-              <img
-                src={art.image}
-                alt={art.title}
-                className="max-h-[75vh] object-contain rounded-lg"
-              />
-            </div>
+            <div className="modal-content flex flex-col md:flex-row">
+              <div className="md:w-1/2 flex items-center justify-center bg-zinc-950 p-6 border-r border-zinc-800">
+                <img
+                  src={art.image}
+                  alt={art.title}
+                  className="max-h-[75vh] object-contain rounded-lg"
+                />
+              </div>
 
-            <div className="md:w-1/2 p-6 flex flex-col text-zinc-100 overflow-y-auto max-h-[75vh] space-y-2">
-              <h2 className="text-3xl mt-2 font-semibold text-yellow mb-1">
-                {art.title || "Untitled"}
-              </h2>
-              <h3 className="text-lg italic mb-4 text-zinc-400">
-                {art.artist || "Unknown artist"}
-              </h3>
+              <div className="md:w-1/2 p-6 flex flex-col text-zinc-100 max-h-[75vh] space-y-2">
+                <h2 className="text-3xl font-semibold text-yellow mb-1">
+                  {art.title || "Untitled"}
+                </h2>
+                <h3 className="text-lg italic mb-4 text-zinc-400">
+                  {art.artist || "Unknown artist"}
+                </h3>
 
-              <div className="space-y-1.5 text-sm">
-                {art.objectDate && (
-                  <p>
-                    <span className="text-zinc-500">Date:</span>{" "}
-                    {art.objectDate}
-                  </p>
-                )}
-                {art.period && (
-                  <p>
-                    <span className="text-zinc-500">Period:</span> {art.period}
-                  </p>
-                )}
-                {art.culture && (
-                  <p>
-                    <span className="text-zinc-500">Culture:</span>{" "}
-                    {art.culture}
-                  </p>
-                )}
-                {art.medium && (
-                  <p>
-                    <span className="text-zinc-500">Medium:</span> {art.medium}
-                  </p>
-                )}
-                {art.dimensions && (
-                  <p>
-                    <span className="text-zinc-500">Dimensions:</span>{" "}
-                    {art.dimensions}
-                  </p>
-                )}
-                {art.department && (
-                  <p>
-                    <span className="text-zinc-500">Department:</span>{" "}
-                    {art.department}
-                  </p>
-                )}
-                {art.classification && (
-                  <p>
-                    <span className="text-zinc-500">Classification:</span>{" "}
-                    {art.classification}
-                  </p>
-                )}
-                {art.rightsAndReproduction && (
-                  <p>
-                    <span className="text-zinc-500">Rights:</span>{" "}
-                    {art.rightsAndReproduction}
-                  </p>
-                )}
-                {art.source && (
-                  <p>
-                    <span className="text-zinc-500">Source:</span> {art.source}
-                  </p>
-                )}
+                <div className="space-y-1.5 text-sm">
+                  {art.objectDate && (
+                    <p>
+                      <span className="text-zinc-500">Date:</span>{" "}
+                      {art.objectDate}
+                    </p>
+                  )}
+                  {art.period && (
+                    <p>
+                      <span className="text-zinc-500">Period:</span>{" "}
+                      {art.period}
+                    </p>
+                  )}
+                  {art.culture && (
+                    <p>
+                      <span className="text-zinc-500">Culture:</span>{" "}
+                      {art.culture}
+                    </p>
+                  )}
+                  {art.medium && (
+                    <p>
+                      <span className="text-zinc-500">Medium:</span>{" "}
+                      {art.medium}
+                    </p>
+                  )}
+                  {art.dimensions && (
+                    <p>
+                      <span className="text-zinc-500">Dimensions:</span>{" "}
+                      {art.dimensions}
+                    </p>
+                  )}
+                  {art.department && (
+                    <p>
+                      <span className="text-zinc-500">Department:</span>{" "}
+                      {art.department}
+                    </p>
+                  )}
+                  {art.classification && (
+                    <p>
+                      <span className="text-zinc-500">Classification:</span>{" "}
+                      {art.classification}
+                    </p>
+                  )}
+                  {art.rightsAndReproduction && (
+                    <p>
+                      <span className="text-zinc-500">Rights:</span>{" "}
+                      {art.rightsAndReproduction}
+                    </p>
+                  )}
+                  {art.source && (
+                    <p>
+                      <span className="text-zinc-500">Source:</span>{" "}
+                      {art.source}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

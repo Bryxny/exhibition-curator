@@ -32,9 +32,16 @@ body {
   line-height: 1.6;
 }
 
+html,
 body {
-  overscroll-behavior-y: none;
-  touch-action: pan-y;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: auto;
+}
+
+.modal-content {
+  overflow-y: auto;
+  max-height: 90vh;
+  -webkit-overflow-scrolling: touch;
 }
 
 h1,
