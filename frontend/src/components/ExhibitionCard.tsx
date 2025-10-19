@@ -65,7 +65,7 @@ export default function ExhibitionCard(art: Artwork) {
           onClick={() => setModalOpen(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row border border-zinc-700">
+            className="relative bg-zinc-900 rounded-2xl shadow-2xl w-full max-w-5xl flex flex-col md:flex-row border border-zinc-700 mb-10">
             <button
               className="absolute top-3 right-3 z-40 text-zinc-400 hover:text-yellow transition-colors"
               onClick={() => setModalOpen(false)}>
@@ -73,15 +73,15 @@ export default function ExhibitionCard(art: Artwork) {
             </button>
 
             <div className="modal-content flex flex-col md:flex-row mt-10">
-              <div className="md:w-1/2 flex items-center justify-center bg-zinc-950 m-6 border-r border-zinc-800">
+              <div className="md:w-1/2 flex items-center justify-center m-6">
                 <img
                   src={art.image}
                   alt={art.title}
-                  className="max-h-[75vh] object-contain rounded-lg"
+                  className="max-h-[60vh] object-contain rounded-lg"
                 />
               </div>
 
-              <div className="md:w-1/2 p-6 flex flex-col text-zinc-100 max-h-[75vh] space-y-2">
+              <div className="md:w-1/2 p-6 flex flex-col text-zinc-100 max-h-[60vh] space-y-2">
                 <h2 className="text-3xl font-semibold text-yellow mb-1">
                   {art.title || "Untitled"}
                 </h2>
