@@ -19,7 +19,7 @@
 
 ## Tech Stack
 
-- **Frontend:** Next.js, React, Tailwind CSS  
+- **Frontend:** Next.js, TypeScript, React, Tailwind CSS  
 - **Database:** Firebase, Firebase Auth
 - **APIs:** Various museum/university collection APIs
 - **Hosting:** Vercel   
