@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   PencilIcon,
   ShareIcon,
@@ -9,6 +9,7 @@ import {
 import { saveExhibition, db } from "@/lib/firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { SavedCollection } from "@/types/collection";
+import { useCollection } from "@/context/CollectionContext";
 
 interface ExhibitionFormProps {
   userId?: string;
@@ -21,7 +22,9 @@ export default function ExhibitionForm({
   artworks = [],
   setUserCollections,
 }: ExhibitionFormProps) {
-  const [title, setTitle] = useState("My Exhibition");
+  const { collectionTitle, setCollectionTitle } = useCollection();
+
+  const [title, setTitle] = useState(collectionTitle);
   const [isEditing, setIsEditing] = useState(false);
   const [shareLink, setShareLink] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
@@ -33,28 +36,42 @@ export default function ExhibitionForm({
   const buttonClasses =
     "flex items-center justify-center px-4 py-2.5 border border-yellow text-yellow rounded-md bg-zinc-700 hover:bg-yellow hover:text-black transition-all w-full sm:w-auto gap-2";
 
-  const saveIfNeeded = async () => {
-    if (!savedId) {
-      const thumbnail = artworks[0]?.image || "";
-      const savedDoc = await saveExhibition(
-        userId!,
-        title,
-        artworks,
-        thumbnail
-      );
-      setUserCollections((prev) => [
-        ...prev,
-        { id: savedDoc.id, title, artworks, thumbnail },
-      ]);
-      setSavedId(savedDoc.id);
-      return savedDoc.id;
-    }
-    return savedId;
+  useEffect(() => {
+    setTitle(collectionTitle);
+    setSavedId(null);
+    setShareId(null);
+  }, [collectionTitle]);
+
+  const handleTitleChange = (newTitle: string) => {
+    setTitle(newTitle);
+    setCollectionTitle(newTitle);
   };
 
   const showToast = (message: string, link?: string) => {
     setToast({ message, link });
     setTimeout(() => setToast(null), 3000);
+  };
+
+  const saveIfNeeded = async () => {
+    const thumbnail = artworks[0]?.image || "";
+
+    if (savedId) {
+      const docRef = doc(db, `users/${userId}/collections/${savedId}`);
+      await setDoc(
+        docRef,
+        { title, artworks, thumbnail, updatedAt: serverTimestamp() },
+        { merge: true }
+      );
+      return savedId;
+    }
+
+    const savedDoc = await saveExhibition(userId!, title, artworks, thumbnail);
+    setUserCollections((prev) => [
+      ...prev,
+      { id: savedDoc.id, title, artworks, thumbnail },
+    ]);
+    setSavedId(savedDoc.id);
+    return savedDoc.id;
   };
 
   const handleSave = async () => {
@@ -65,6 +82,7 @@ export default function ExhibitionForm({
       showToast("Exhibition saved");
       setIsEditing(false);
     } catch (err) {
+      console.error(err);
       showToast("Error saving exhibition");
     }
   };
@@ -93,6 +111,7 @@ export default function ExhibitionForm({
       await navigator.clipboard.writeText(url);
       showToast("Link copied to clipboard", url);
     } catch (err) {
+      console.error(err);
       showToast("Error sharing exhibition.");
     }
   };
@@ -107,7 +126,7 @@ export default function ExhibitionForm({
           type="text"
           value={title}
           readOnly={!isEditing}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => handleTitleChange(e.target.value)}
           onClick={() => !isEditing && setIsEditing(true)}
           className={`w-full rounded-md text-lg sm:text-xl ${
             isEditing

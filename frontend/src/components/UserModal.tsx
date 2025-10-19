@@ -18,8 +18,12 @@ import { useRouter } from "next/navigation";
 export default function UserModal() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-  const { userCollections, setUserCollections, setCollection } =
-    useCollection();
+  const {
+    userCollections,
+    setUserCollections,
+    setCollection,
+    setCollectionTitle,
+  } = useCollection();
   const router = useRouter();
 
   useEffect(() => {
@@ -109,8 +113,9 @@ export default function UserModal() {
     setIsModalOpen(false);
   };
 
-  const handleLoad = (artworks: any[]) => {
-    setCollection(artworks);
+  const handleLoad = (collection: SavedCollection) => {
+    setCollection(collection.artworks);
+    setCollectionTitle(collection.title);
     setIsModalOpen(false);
     router.push("/exhibition");
   };
@@ -196,7 +201,7 @@ export default function UserModal() {
                           <div
                             key={col.id}
                             className={collectionCardClass}
-                            onClick={() => handleLoad(col.artworks)}>
+                            onClick={() => handleLoad(col)}>
                             <img
                               src={col.thumbnail || "/placeholder1.png"}
                               alt={col.title}

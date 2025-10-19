@@ -6,8 +6,10 @@ import { SavedCollection } from "../types/collection";
 
 interface CollectionContextType {
   collection: Artwork[];
+  collectionTitle: string;
   userCollections: SavedCollection[];
   setCollection: React.Dispatch<React.SetStateAction<Artwork[]>>;
+  setCollectionTitle: React.Dispatch<React.SetStateAction<string>>;
   setUserCollections: React.Dispatch<React.SetStateAction<SavedCollection[]>>;
   addToCollection: (artwork: Artwork) => void;
   removeFromCollection: (artwork: Artwork) => void;
@@ -27,6 +29,7 @@ export const useCollection = () => {
 
 export const CollectionProvider = ({ children }: { children: ReactNode }) => {
   const [collection, setCollection] = useState<Artwork[]>([]);
+  const [collectionTitle, setCollectionTitle] = useState("My Exhibition");
   const [userCollections, setUserCollections] = useState<SavedCollection[]>([]);
 
   const addToCollection = (artwork: Artwork) => {
@@ -43,8 +46,10 @@ export const CollectionProvider = ({ children }: { children: ReactNode }) => {
     <CollectionContext.Provider
       value={{
         collection,
-        setCollection,
+        collectionTitle,
         userCollections,
+        setCollection,
+        setCollectionTitle,
         setUserCollections,
         addToCollection,
         removeFromCollection,
