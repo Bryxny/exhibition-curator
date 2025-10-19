@@ -1,12 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Artwork } from "../types/artwork";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function ExhibitionCard(art: Artwork) {
   const [modalOpen, setModalOpen] = useState(false);
 
+  useEffect(() => {
+    if (modalOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+    } else {
+      const scrollY = -parseInt(document.body.style.top || "0");
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
+    }
+
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+    };
+  }, [modalOpen]);
   return (
     <>
       <div
@@ -36,7 +59,7 @@ export default function ExhibitionCard(art: Artwork) {
 
       {modalOpen && art && (
         <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex min-h-screem items-center justify-center p-4"
           onClick={() => setModalOpen(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
