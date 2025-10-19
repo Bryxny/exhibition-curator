@@ -189,7 +189,7 @@ export default function UserModal() {
                   <h4 className="text-neutral-200 font-medium mb-1 text-lg">
                     Saved Collections
                   </h4>
-                  <div className="overflow-y-auto max-h-[80vh] custom-scrollbar">
+                  <div className="overflow-y-auto max-h-[75vh] custom-scrollbar">
                     {userCollections.length ? (
                       <div className="flex flex-col gap-2">
                         {userCollections.map((col) => (

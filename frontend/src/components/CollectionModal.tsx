@@ -162,7 +162,11 @@ export default function CollectionModal() {
                 </div>
               )}
             </div>
-            <div className="sticky bottom-0 left-0 w-full bg-zinc-900/90 px-4 py-4 z-20">
+            <div
+              className="sticky bottom-2 left-0 w-full bg-zinc-900/90 px-4 py-4 z-20 "
+              style={{
+                paddingBottom: "calc(20px + env(safe-area-inset-bottom))",
+              }}>
               {pathname === "/exhibition" ? (
                 <button
                   className={buttonClass}
